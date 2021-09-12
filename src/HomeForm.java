@@ -47,8 +47,12 @@ public class HomeForm extends BaseForm{
 	protected void createContents() {
 		createBaseContents("Welcome");
 		 
-		// Customers button
-		btnEveryDay = createLargeButton("Manage Customers", buttonXPosition, 108);
+		// Manage Customers button
+		btnEveryDay = createLargeButton("Manage Customers", buttonXPosition, 100);
+		openManageCustomersWindowOnClick();
+		
+		// Manage Customer Accounts button
+		btnEveryDay = createLargeButton("Manage Customer Accounts", buttonXPosition, 250);
 		openManageCustomersWindowOnClick();
 
 	}
