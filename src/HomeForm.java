@@ -66,8 +66,10 @@ public class HomeForm extends BaseForm{
 			@Override
 			public void mouseDown(MouseEvent e) {
 				shell.close();
-				CustomerView customerPage = new CustomerView();
-				customerPage.open();
+//				CustomerView customerPage = new CustomerView();
+//				customerPage.open();
+				TransferView transfer = new TransferView();
+				transfer.open();
 			}
 		});
 	}

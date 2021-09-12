@@ -17,8 +17,8 @@ public class BaseForm {
 	protected static CustomerController controller = new CustomerController();
 	
 	private static final String BANK_NAME = "ABC Bank";
-	private final int texboxLength =220;
-	private final int texboxHeight =20;
+	private final int texboxLength = 220;
+	private final int texboxHeight = 20;
 	
 
 	/**
