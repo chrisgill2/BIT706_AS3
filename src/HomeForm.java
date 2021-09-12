@@ -10,7 +10,7 @@ public class HomeForm extends BaseForm{
 
 	private Button btnEveryDay;
 	private int buttonXPosition = 215;
-	private CustomerView customerPage = new CustomerView();
+//	private CustomerView customerPage = new CustomerView();
 	
 
 	/**
@@ -53,7 +53,7 @@ public class HomeForm extends BaseForm{
 		
 		// Manage Customer Accounts button
 		btnEveryDay = createLargeButton("Manage Customer Accounts", buttonXPosition, 250);
-		openManageCustomersWindowOnClick();
+		openManageCustomerAccountsWindowOnClick();
 
 	}
 	
@@ -66,7 +66,23 @@ public class HomeForm extends BaseForm{
 			@Override
 			public void mouseDown(MouseEvent e) {
 				shell.close();
+				CustomerView customerPage = new CustomerView();
 				customerPage.open();
+			}
+		});
+	}
+	
+	/**
+	 * Open the Manage customers window
+	 * on button click.
+	 */	
+	private void openManageCustomerAccountsWindowOnClick() {
+		btnEveryDay.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				shell.close();
+				CustomerAccountsView customerAccountsPage = new CustomerAccountsView();
+				customerAccountsPage.open();
 			}
 		});
 	}

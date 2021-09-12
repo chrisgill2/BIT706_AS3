@@ -40,7 +40,7 @@ public class BaseForm {
 	 */
 	public void createBaseContents(String headerText) {
 		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY));
-		shell.setSize(599, 516);
+		shell.setSize(800, 700);
 		shell.setText(headerText);
 		
 		Label lblHeader = new Label(shell, SWT.CENTER);
@@ -66,7 +66,7 @@ public class BaseForm {
 	protected Button createButton(String buttonText, int xPosition, int yPosition) {
 		Button button = new Button(shell, SWT.NONE);
 		button.setText(buttonText);
-		button.setBounds(xPosition, yPosition, 145, 41);
+		button.setBounds(xPosition, yPosition, 145, 60);
 		return button;
 	}
 	
@@ -76,7 +76,7 @@ public class BaseForm {
 	protected Button createLargeButton(String buttonText, int xPosition, int yPosition) {
 		Button button = new Button(shell, SWT.NONE);
 		button.setText(buttonText);
-		button.setBounds(xPosition, yPosition, 180, 90);
+		button.setBounds(xPosition, yPosition, 220, 130);
 		return button;
 	}
 	
