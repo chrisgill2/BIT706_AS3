@@ -59,7 +59,7 @@ public class AddCustomerView extends ModifyCustomerForm{
 		customerDetails.put("email", readEmailFromTextBox());
 		customerDetails.put("address", readAddressFromTextBox());
 		if (!fieldEntryError) {
-			controller.addCustomerToList(customerDetails);
+			controller.addCustomerToList(customerDetails, employeeCheckboxSelected());
 		}
 	}
 }

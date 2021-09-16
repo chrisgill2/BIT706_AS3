@@ -23,8 +23,8 @@ public class CustomerController {
 		customer.deleteCustomer(customerPositionInList);
 	}
 	
-	public void addCustomerToList(HashMap<String, String> customerDetails) {
-		customer.addCustomer(customerDetails);
+	public void addCustomerToList(HashMap<String, String> customerDetails, boolean isBankEmployee) {
+		customer.addCustomer(customerDetails, isBankEmployee);
 	}
 	
 	public void editCustomer(HashMap<String, String> customerDetails) {

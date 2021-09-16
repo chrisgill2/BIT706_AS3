@@ -8,7 +8,13 @@ public class Customer {
 	private String customerID;
 	private String email;
 	private String address;
+	private boolean isBankEmployee;
 	static List <Customer> customerList = new ArrayList<Customer>();
+	static List <Account> customerAccounts;
+	
+	public Customer() {
+		customerAccounts = new ArrayList<Account>();
+	}
 	
 	public String getCustomerName() {
 		return name;
@@ -24,6 +30,10 @@ public class Customer {
 	
 	public String getCustomerAddress() {
 		return address;
+	}
+	
+	public boolean getIsBankEmployee() {
+		return isBankEmployee;
 	}
 	
 	public void setName(String name) {
@@ -42,11 +52,12 @@ public class Customer {
 		this.address = address;
 	}
 	
-	public void addCustomer(HashMap<String, String> customerDetails) {
+	public void addCustomer(HashMap<String, String> customerDetails, boolean isBankEmployee) {
 		Customer customer = new Customer();
 		customer.name = customerDetails.get("name");
 		customer.email = customerDetails.get("email");
 		customer.address = customerDetails.get("address");
+		customer.isBankEmployee = isBankEmployee;
 		customer.customerID = getNewCustomerID();
 		customerList.add(customer);
 	}
@@ -113,5 +124,21 @@ public class Customer {
 		// Increment the latest customer ID and return
 		int latestCustomerID = Collections.max(customerIDList) + 1;
 		return Integer.toString(latestCustomerID);
+	}
+	
+	public void addCustomerAccount(String accountType) {
+		switch (accountType) {
+			case "EveryDay" :
+				
+		}
+		
+	}
+	
+	private void addCustomerAccount(Account account) {
+		if (customerAccounts.contains(account)) {
+			// ERROR MESSAGE BOX HERE;
+		} else {
+			customerAccounts.add(account);
+		}
 	}
 }

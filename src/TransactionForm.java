@@ -1,24 +1,26 @@
+
+
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Label;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Button;
 
-public class TransferView extends BaseForm{
+public class TransactionForm extends BaseForm{
 
 	protected Shell shlAbcBank = super.shell;
+	private AccountForm accountForm;
 	protected Label lblMessage;
 	protected Text textBoxAmount;
 	protected Button btnCancel;
 	protected Button btnTransaction;
 	
-	protected final int buttonYPosition = 300;
+	private Transaction transaction;
+	protected final int buttonYPosition = 221;
 	protected String transactionType;
 	
 	private static final String INVALID_AMOUNT_ERROR = "Please enter a valid amount.";
@@ -27,7 +29,18 @@ public class TransferView extends BaseForm{
 	private static final String INSUFFICIENT_FUNDS = "Insufficient funds for withdrawal.";
 	private static final String FAILED_TRANSACTION = "Failed Transaction";
 	private static final String SUCCESS = "Successful Transaction";
-
+	private static final String DEPOSIT = "Deposit";
+	private static final String WITHDRAW = "Withdraw";
+	private static final String CANCEL = "Cancel";
+	
+	/**
+	 * @wbp.parser.entryPoint
+	 */
+	public TransactionForm(Account account, String transactionType) {
+		this.transactionType = transactionType;
+		transaction = new Transaction(account);
+		accountForm = new AccountForm(account, account.accountName);
+	}
 
 	/**
 	 * Open the window.
@@ -53,33 +66,25 @@ public class TransferView extends BaseForm{
 		
 		// Amount to deposit text box
 		textBoxAmount = new Text(shlAbcBank, SWT.BORDER);
-		textBoxAmount.setBounds(263, 200, 190, 20);
-		textBoxAmount.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		textBoxAmount.setBounds(263, 145, 137, 19);
 		
 		// Amount label
 		Label lblAmount = new Label(shlAbcBank, SWT.NONE);
-		lblAmount.setBounds(140, 200, 59, 14);
+		lblAmount.setBounds(167, 148, 59, 14);
 		lblAmount.setText("Amount");
-		
-		// Transfer to account label
-		Label lblAccountTransfer = new Label(shlAbcBank, SWT.NONE);
-		lblAccountTransfer.setBounds(140, 150, 120, 14);
-		lblAccountTransfer.setText("Transfer To Account");
-		
-		Combo combo = new Combo(shell, SWT.NONE);
-		combo.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		combo.setBounds(263, 145, 190, 35);
-		combo.add("EveryDay");
-		combo.add("Omni");
-		combo.add("Investment");
 
-
-		btnTransaction = createButton("Transfer", 150, buttonYPosition);
-		performTransactionOnClick();
+		// Transaction button
+		if (transactionType.equals(DEPOSIT)) {
+			btnTransaction = createButton(DEPOSIT, 150, buttonYPosition);
+			performTransactionOnClick();
+		} else {
+			btnTransaction = createButton(WITHDRAW, 150, buttonYPosition);
+			performTransactionOnClick();
+		}
 		
 
 		// Cancel button
-		btnCancel = createButton("Cancel", 350, buttonYPosition);
+		btnCancel = createButton(CANCEL, 350, buttonYPosition);
 		cancelTransactionOnClick();
 
 	}
@@ -93,7 +98,7 @@ public class TransferView extends BaseForm{
 			@Override
 			public void mouseDown(MouseEvent e) {
 				shlAbcBank.close();
-//				accountForm.open();
+				accountForm.open();
 			}
 		});
 	}
@@ -134,19 +139,19 @@ public class TransferView extends BaseForm{
 					return;
 					};
 				
-//				if (transactionType.equals("Deposit")) {
-//					transaction.recordDeposit(amount);
-//					displayMessage(SUCCESS, transactionType + SUCCESSFUL_TRANSACTION);
-//				} else {
-//					transaction.performWithdrawal(amount);
-//					if (!transaction.getWithdrawalSuccessIndicator()) {
-//						displayMessage(FAILED_TRANSACTION, INSUFFICIENT_FUNDS);
-//					} else {
-//						displayMessage(SUCCESS, transactionType + SUCCESSFUL_TRANSACTION);
-//					}
-//				}
-//				shlAbcBank.close();
-//				accountForm.open();
+				if (transactionType.equals("Deposit")) {
+					transaction.recordDeposit(amount);
+					displayMessage(SUCCESS, transactionType + SUCCESSFUL_TRANSACTION);
+				} else {
+					try {
+						transaction.performWithdrawal(amount);
+						displayMessage(SUCCESS, transactionType + SUCCESSFUL_TRANSACTION);
+					} catch (FailedWithdrawalException e1) {
+						displayMessage(FAILED_TRANSACTION, e1.getMessage());
+					}
+				}
+				shlAbcBank.close();
+				accountForm.open();
 			}
 		});
 	}
