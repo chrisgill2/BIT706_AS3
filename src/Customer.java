@@ -10,7 +10,7 @@ public class Customer {
 	private String address;
 	private boolean isBankEmployee;
 	static List <Customer> customerList = new ArrayList<Customer>();
-	static List <Account> customerAccounts;
+	private List <Account> customerAccounts;
 	
 	public Customer() {
 		customerAccounts = new ArrayList<Account>();
@@ -126,19 +126,19 @@ public class Customer {
 		return Integer.toString(latestCustomerID);
 	}
 	
-	public void addCustomerAccount(String accountType) {
-		switch (accountType) {
-			case "EveryDay" :
-				
-		}
+	public List <Account> getCustomerAccounts(String currentCustomerName) {
+//		Customer customer = customerList.get(getCustomerPositionInList(currentCustomerName));
+		Customer customer = new Customer();
+		EveryDayAccount ed = new EveryDayAccount(customer);
+		OmniAccount omni = new OmniAccount(customer);
+		customer.customerAccounts.add(ed);
+		customer.customerAccounts.add(omni);
+		return customer.customerAccounts;
 		
 	}
+
 	
-	private void addCustomerAccount(Account account) {
-		if (customerAccounts.contains(account)) {
-			// ERROR MESSAGE BOX HERE;
-		} else {
-			customerAccounts.add(account);
-		}
+	public void addCustomerAccount(Account account) {
+		customerAccounts.add(account);
 	}
 }

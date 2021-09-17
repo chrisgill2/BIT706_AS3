@@ -66,8 +66,8 @@ public class CustomerAccountsView extends BaseForm{
 			@Override
 			public void mouseDown(MouseEvent e) {
 				shell.close();
-//				AddCustomerView addCustomerWindow = new AddCustomerView();
-//				addCustomerWindow.open();
+				AddCustomerAccountForm customerAccountForm = new AddCustomerAccountForm();
+				customerAccountForm.open();
 			}
 		});
 	}
@@ -113,14 +113,14 @@ public class CustomerAccountsView extends BaseForm{
 	
 	private void displayCustomerAccountList() {
 		customerAccountsListBox.removeAll();
-//		java.util.List<Customer> customerList = controller.getCustomers();
-//		if (customerList != null) {
-//			if (customerList.size() > 0) {
-//				for(Customer customer:customerList) {
-//					customerAccountsListBox.add(customer.getCustomerName());
-//				}
-//			} 
-//		}
+		java.util.List<String> customerAccountList = controller.getCustomerAccountNames();
+		if (customerAccountList != null) {
+			if (customerAccountList.size() > 0) {
+				for(String accountName:customerAccountList) {
+					customerAccountsListBox.add(accountName);
+				}
+			} 
+		}
 	}
 	
 	/*

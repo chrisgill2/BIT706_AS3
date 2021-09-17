@@ -18,7 +18,6 @@ public class HomeForm extends BaseForm{
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String thing = "t";
 		try {
 			HomeForm window = new HomeForm();
 			window.open();
