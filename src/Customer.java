@@ -128,11 +128,6 @@ public class Customer {
 	
 	public List <Account> getCustomerAccounts(String currentCustomerName) {
 		Customer customer = customerList.get(getCustomerPositionInList(currentCustomerName));
-//		Customer customer = new Customer();
-//		EveryDayAccount ed = new EveryDayAccount(customer);
-//		OmniAccount omni = new OmniAccount(customer);
-//		customer.customerAccounts.add(ed);
-//		customer.customerAccounts.add(omni);
 		return customer.customerAccounts;
 		
 	}
