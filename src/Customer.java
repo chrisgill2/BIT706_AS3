@@ -127,18 +127,19 @@ public class Customer {
 	}
 	
 	public List <Account> getCustomerAccounts(String currentCustomerName) {
-//		Customer customer = customerList.get(getCustomerPositionInList(currentCustomerName));
-		Customer customer = new Customer();
-		EveryDayAccount ed = new EveryDayAccount(customer);
-		OmniAccount omni = new OmniAccount(customer);
-		customer.customerAccounts.add(ed);
-		customer.customerAccounts.add(omni);
+		Customer customer = customerList.get(getCustomerPositionInList(currentCustomerName));
+//		Customer customer = new Customer();
+//		EveryDayAccount ed = new EveryDayAccount(customer);
+//		OmniAccount omni = new OmniAccount(customer);
+//		customer.customerAccounts.add(ed);
+//		customer.customerAccounts.add(omni);
 		return customer.customerAccounts;
 		
 	}
 
 	
-	public void addCustomerAccount(Account account) {
-		customerAccounts.add(account);
+	public void addCustomerAccount(String currentCustomerName, Account account) {
+		Customer customer = customerList.get(getCustomerPositionInList(currentCustomerName));
+		customer.customerAccounts.add(account);
 	}
 }

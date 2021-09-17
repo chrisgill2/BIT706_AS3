@@ -51,9 +51,9 @@ public class HomeForm extends BaseForm{
 		btnEveryDay = createLargeButton("Manage Customers", buttonXPosition, 100);
 		openManageCustomersWindowOnClick();
 		
-		// Manage Customer Accounts button
-		btnEveryDay = createLargeButton("Manage Customer Accounts", buttonXPosition, 250);
-		openManageCustomerAccountsWindowOnClick();
+//		// Manage Customer Accounts button
+//		btnEveryDay = createLargeButton("Manage Customer Accounts", buttonXPosition, 250);
+//		openManageCustomerAccountsWindowOnClick();
 
 	}
 	

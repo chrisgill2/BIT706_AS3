@@ -14,6 +14,7 @@ public class CustomerAccountsView extends BaseForm{
 	private Button btnDeposit;
 	private Button btnWithdraw;
 	private Button btnTransfer;
+	private Button btnCustomers;
 	private int buttonXPosition = 289;
 	private int selectedCustomerPosition;
 	
@@ -58,6 +59,9 @@ public class CustomerAccountsView extends BaseForm{
 		
 		btnTransfer = createButton("Transfer", buttonXPosition, 320);
 		openTransferWindowOnClick();
+		
+		btnCustomers = createButton("Customers", buttonXPosition, 390);
+		openManageCustomersWindowOnClick();
 	}
 
 	
@@ -107,6 +111,21 @@ public class CustomerAccountsView extends BaseForm{
 //					controller.deleteCustomer(selectedCustomerPosition);
 //					displayCustomerList();
 //				}
+			}
+		});
+	}
+	
+	/**
+	 * Open the Manage customers window
+	 * on button click.
+	 */	
+	private void openManageCustomersWindowOnClick() {
+		btnCustomers.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				shell.close();
+				CustomerView customerPage = new CustomerView();
+				customerPage.open();
 			}
 		});
 	}

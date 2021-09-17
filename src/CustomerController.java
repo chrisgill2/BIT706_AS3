@@ -51,7 +51,7 @@ public class CustomerController {
 		if (getCustomerAccountNames().contains(account.getAccountName())) {
 			accountAdded = false;
 		} else {
-			customer.addCustomerAccount(account);
+			customer.addCustomerAccount(customerToEdit, account);
 			accountAdded = true;
 		}
 	}
