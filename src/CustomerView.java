@@ -15,6 +15,7 @@ public class CustomerView extends BaseForm{
 	private Button btnAddCustomer;
 	private Button btnEditCustomer;
 	private Button btnDeleteCustomer;
+	private Button btnManageAccounts;
 	private int buttonXPosition = 289;
 	private int selectedCustomerPosition;
 	
@@ -48,14 +49,17 @@ public class CustomerView extends BaseForm{
 		displayCustomerList();
 		
 		//Customer Buttons
-		btnAddCustomer = createLargeButton("Add Customer", buttonXPosition, 110);
+		btnAddCustomer = createButton("Add Customer", buttonXPosition, 110);
 		openAddCustomerWindowOnClick();
 		
-		btnEditCustomer = createLargeButton("Edit Customer", buttonXPosition, 220);
+		btnEditCustomer = createButton("Edit Customer", buttonXPosition, 180);
 		openEditCustomerWindowOnClick();
 		
-		btnDeleteCustomer = createLargeButton("Delete Customer", buttonXPosition, 330);
+		btnDeleteCustomer = createButton("Delete Customer", buttonXPosition, 250);
 		deleteCustomerOnClick();
+		
+		btnManageAccounts = createButton("Manage Accounts", buttonXPosition, 320);
+		openManageCustomerAccountsWindowOnClick();
 	}
 
 	
@@ -92,6 +96,25 @@ public class CustomerView extends BaseForm{
 				if (customerSelected()) {
 					controller.deleteCustomer(selectedCustomerPosition);
 					displayCustomerList();
+				}
+			}
+		});
+	}
+	
+	/**
+	 * Open the Manage customer accounts window
+	 * on button click.
+	 */	
+	private void openManageCustomerAccountsWindowOnClick() {
+		btnManageAccounts.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				selectedCustomerPosition = customerListBox.getSelectionIndex();
+				if (customerSelected()) {
+					controller.customerToEdit = customerListBox.getItems()[selectedCustomerPosition];
+					shell.close();
+					CustomerAccountsView customerAccountsPage = new CustomerAccountsView();
+					customerAccountsPage.open();
 				}
 			}
 		});

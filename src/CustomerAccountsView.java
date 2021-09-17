@@ -14,6 +14,7 @@ public class CustomerAccountsView extends BaseForm{
 	private Button btnDeposit;
 	private Button btnWithdraw;
 	private Button btnTransfer;
+	private Button btnCustomers;
 	private int buttonXPosition = 289;
 	private int selectedCustomerPosition;
 	
@@ -58,6 +59,9 @@ public class CustomerAccountsView extends BaseForm{
 		
 		btnTransfer = createButton("Transfer", buttonXPosition, 320);
 		openTransferWindowOnClick();
+		
+		btnCustomers = createButton("Customers", buttonXPosition, 390);
+		openManageCustomersWindowOnClick();
 	}
 
 	
@@ -66,8 +70,8 @@ public class CustomerAccountsView extends BaseForm{
 			@Override
 			public void mouseDown(MouseEvent e) {
 				shell.close();
-//				AddCustomerView addCustomerWindow = new AddCustomerView();
-//				addCustomerWindow.open();
+				AddCustomerAccountForm customerAccountForm = new AddCustomerAccountForm();
+				customerAccountForm.open();
 			}
 		});
 	}
@@ -111,16 +115,31 @@ public class CustomerAccountsView extends BaseForm{
 		});
 	}
 	
+	/**
+	 * Open the Manage customers window
+	 * on button click.
+	 */	
+	private void openManageCustomersWindowOnClick() {
+		btnCustomers.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				shell.close();
+				CustomerView customerPage = new CustomerView();
+				customerPage.open();
+			}
+		});
+	}
+	
 	private void displayCustomerAccountList() {
 		customerAccountsListBox.removeAll();
-//		java.util.List<Customer> customerList = controller.getCustomers();
-//		if (customerList != null) {
-//			if (customerList.size() > 0) {
-//				for(Customer customer:customerList) {
-//					customerAccountsListBox.add(customer.getCustomerName());
-//				}
-//			} 
-//		}
+		java.util.List<String> customerAccountList = controller.getCustomerAccountNames();
+		if (customerAccountList != null) {
+			if (customerAccountList.size() > 0) {
+				for(String accountName:customerAccountList) {
+					customerAccountsListBox.add(accountName);
+				}
+			} 
+		}
 	}
 	
 	/*
