@@ -15,6 +15,7 @@ public class CustomerAccountsView extends BaseForm{
 	private Button btnWithdraw;
 	private Button btnTransfer;
 	private Button btnCustomers;
+	private Button btnManageAccounts;
 	private int buttonXPosition = 289;
 	private int selectedCustomerPosition;
 	
@@ -51,16 +52,10 @@ public class CustomerAccountsView extends BaseForm{
 		btnAddAccount = createButton("Add New Account", buttonXPosition, 110);
 		openAddAccountWindowOnClick();
 		
-		btnDeposit = createButton("Deposit", buttonXPosition, 180);
-		openDepositWindowOnClick();
-		
-		btnWithdraw = createButton("Withdraw", buttonXPosition, 250);
-		openWithdrawWindowOnClick();
-		
-		btnTransfer = createButton("Transfer", buttonXPosition, 320);
-		openTransferWindowOnClick();
-		
-		btnCustomers = createButton("Customers", buttonXPosition, 390);
+		btnManageAccounts = createButton("Manage Account", buttonXPosition, 180);
+		openAccountWindowOnClick();
+				
+		btnCustomers = createButton("Customers", buttonXPosition, 250);
 		openManageCustomersWindowOnClick();
 	}
 
@@ -75,30 +70,14 @@ public class CustomerAccountsView extends BaseForm{
 			}
 		});
 	}
-		
-	private void openDepositWindowOnClick() {
-		btnDeposit.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				selectedCustomerPosition = customerAccountsListBox.getSelectionIndex();
-				if (customerAccountSelected()) {
-//					controller.customerToEdit = customerAccountsListBox.getItems()[selectedCustomerPosition];
-//					shell.close();
-//					EditCustomerView editCustomerWindow = new EditCustomerView();
-//					editCustomerWindow.open();
-				}
-			}
-		});
-	}
 	
-	private void openWithdrawWindowOnClick() {
-		btnWithdraw.addMouseListener(new MouseAdapter() {
+	private void openAccountWindowOnClick() {
+		btnManageAccounts.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-//				if (customerAccountSelected()) {
-//					controller.deleteCustomer(selectedCustomerPosition);
-//					displayCustomerList();
-//				}
+				Account account = controller.createNewAccount("EveryDay");
+				AccountForm accountForm = new AccountForm(account, "EveryDay");
+				accountForm.open();
 			}
 		});
 	}
