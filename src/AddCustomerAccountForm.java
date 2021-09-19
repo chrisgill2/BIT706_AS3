@@ -16,6 +16,7 @@ public class AddCustomerAccountForm extends BaseForm {
 	private Button btnCancel;
 	private Button btnAddAccount;
 	HomeForm homeForm = new HomeForm();
+	CustomerView customerView = new CustomerView();
 
 	/**
 	 * Open the window.
@@ -71,7 +72,6 @@ public class AddCustomerAccountForm extends BaseForm {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				shell.close();
-				CustomerView customerView = new CustomerView();
 				customerView.open();
 			}
 		});
@@ -93,7 +93,7 @@ public class AddCustomerAccountForm extends BaseForm {
 				} else {
 					displayMessage("Account Added.", "Account was created.");
 					shell.close();
-					homeForm.open();
+					customerView.open();
 				}
 			}
 		});

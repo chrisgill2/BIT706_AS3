@@ -4,14 +4,19 @@ import java.util.List;
 
 public class CustomerController {
 	private Customer customer = new Customer();
+	private CustomerFile customerFile = new CustomerFile();
 	public String customerToEdit;
 	public boolean accountAdded;
 	
 	public List<Customer> getCustomers() {
+//		customerFile.writeToFile(Customer.customerList);	
+		
+		Customer.customerList = customerFile.readFromFile();
 		return Customer.customerList;
 	}
 	
-	public List<String> getCustomerNames(){
+	public List<String> getCustomerNames(){		
+		Customer.customerList = customerFile.readFromFile();
 		List<String> customerNames = new ArrayList<String>();
 		List<Customer> customers = Customer.customerList;
 		for (Customer customer: customers) {
@@ -26,6 +31,9 @@ public class CustomerController {
 	
 	public void addCustomerToList(HashMap<String, String> customerDetails, boolean isBankEmployee) {
 		customer.addCustomer(customerDetails, isBankEmployee);
+		
+		// thing
+		customerFile.writeToFile(Customer.customerList);
 	}
 	
 	public void editCustomer(HashMap<String, String> customerDetails) {
@@ -56,7 +64,7 @@ public class CustomerController {
 		}
 	}
 	
-	private Account createNewAccount(String accountType) {
+	public Account createNewAccount(String accountType) {
 		Account account;
 		switch (accountType) {
 		case "EveryDay":
@@ -72,5 +80,10 @@ public class CustomerController {
 			return null;
 		}
 		return account;
+	}
+	
+	public void readCustomersFromFile() {
+//		customerFile.readFromFile();
+		Customer.customerList = customerFile.readFromFile();
 	}
 }

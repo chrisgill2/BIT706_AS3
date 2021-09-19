@@ -37,6 +37,7 @@ public class Transaction {
 		// Update the applicable account details instance
 		switch (account.accountName) {
 			case "EveryDay":
+				EveryDayAccountDetails.setInstance((EveryDayAccount)account);
 				((EveryDayAccount)(account)).updateAccountDetails("Deposit", depositAmount);
 				EveryDayAccountDetails.transactionList.add(transaction);
 				break;
@@ -166,8 +167,11 @@ public class Transaction {
 		// Get the the transactions for the applicable account
 		switch (account.accountName) {
 		case "EveryDay":
-			for (String transaction :EveryDayAccountDetails.transactionList) {
-				transactionList.add(transaction);
+			//thing
+			if(EveryDayAccountDetails.transactionList != null) {
+				for (String transaction :EveryDayAccountDetails.transactionList) {
+					transactionList.add(transaction);
+				}
 			}
 			break;
 		case "Omni":

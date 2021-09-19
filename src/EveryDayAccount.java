@@ -20,6 +20,7 @@ public class EveryDayAccount extends Account {
 		EveryDayAccountDetails everyDayAccountDetails = EveryDayAccountDetails.getInstance();
 		EveryDayAccountDetails.balance = this.balance;
 		everyDayAccountDetails.lastTransaction = transaction+ "$" + amount;
+		String t = "t";
     }
 
 	@Override

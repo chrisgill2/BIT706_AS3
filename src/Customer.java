@@ -1,15 +1,16 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class Customer {
+public class Customer implements Serializable{
 	private String name;
 	private String customerID;
 	private String email;
 	private String address;
 	private boolean isBankEmployee;
-	static List <Customer> customerList = new ArrayList<Customer>();
+	static List <Customer> customerList;
 	private List <Account> customerAccounts;
 	
 	public Customer() {
@@ -60,6 +61,10 @@ public class Customer {
 		customer.isBankEmployee = isBankEmployee;
 		customer.customerID = getNewCustomerID();
 		customerList.add(customer);
+		
+		
+//		customerFile.writeToFile(customerList);
+//		List<Customer> customers = customerFile.readFromFile();
 	}
 	
 	/* 
@@ -109,7 +114,7 @@ public class Customer {
 	 */
 	private String getNewCustomerID() {
 		List <Integer> customerIDList = new ArrayList<Integer>();
-		if (customerList.size() > 0) {
+		if (customerList != null) {
 			// Create a list of customer IDs
 			for (Customer customer: customerList) {
 				int customerID = Integer.valueOf(customer.getCustomerID());
@@ -118,6 +123,7 @@ public class Customer {
 		}
 		else {
 			// Return 1 if it's the first customer
+			customerList = new ArrayList<Customer>();
 			return "1";
 			};
 		
