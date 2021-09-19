@@ -53,6 +53,10 @@ public class Customer implements Serializable{
 		this.address = address;
 	}
 	
+	public Customer getCustomerByName(String name) {
+		return customerList.get(getCustomerPositionInList(name));
+	}
+	
 	public void addCustomer(HashMap<String, String> customerDetails, boolean isBankEmployee) {
 		Customer customer = new Customer();
 		customer.name = customerDetails.get("name");
@@ -61,10 +65,6 @@ public class Customer implements Serializable{
 		customer.isBankEmployee = isBankEmployee;
 		customer.customerID = getNewCustomerID();
 		customerList.add(customer);
-		
-		
-//		customerFile.writeToFile(customerList);
-//		List<Customer> customers = customerFile.readFromFile();
 	}
 	
 	/* 

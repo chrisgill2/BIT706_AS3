@@ -176,8 +176,7 @@ public class AccountForm extends BaseForm {
 		// Get the the transactions for the applicable account
 		switch (account.accountName) {
 			case "EveryDay":
-				transactionPosition = EveryDayAccountDetails.transactionList.size() -1;
-				transactionList.add(EveryDayAccountDetails.transactionList.get(transactionPosition));
+				account.transactionList.add(account.lastTransaction);
 				break;
 			case "Omni":
 				transactionPosition = OmniAccountDetails.transactionList.size() -1;
@@ -196,27 +195,7 @@ public class AccountForm extends BaseForm {
 	 */
 	private void displayAccountDetails() {
 		// Check for the latest transaction -- not displayed in this iteration
-		switch (account.accountName) {
-			case "EveryDay":
-				if (EveryDayAccountDetails.transactionList.size() > 0) {
-					transactionPosition = EveryDayAccountDetails.transactionList.size() -1;
-					lastTransaction = EveryDayAccountDetails.transactionList.get(transactionPosition);
-				}
-				break;
-			case "Omni":
-				if (OmniAccountDetails.transactionList.size() > 0) {
-					transactionPosition = OmniAccountDetails.transactionList.size() -1;
-					lastTransaction = OmniAccountDetails.transactionList.get(transactionPosition);
-				}
-				break;
-			case "Investment":
-				if (InvestmentAccountDetails.transactionList.size() > 0) {
-					transactionPosition = InvestmentAccountDetails.transactionList.size() -1;
-					lastTransaction = InvestmentAccountDetails.transactionList.get(transactionPosition);
-				}
-				break;
-		}
-		
+		lastTransaction = account.getLastTransaction();
 		String details = account.getLatestAccountDetails();
 		displayMessage(ACCOUNT_DETAILS, details);
 	}

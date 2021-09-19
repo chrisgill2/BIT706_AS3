@@ -60,6 +60,8 @@ public class CustomerController {
 			accountAdded = false;
 		} else {
 			customer.addCustomerAccount(customerToEdit, account);
+			// thing
+			customerFile.writeToFile(Customer.customerList);
 			accountAdded = true;
 		}
 	}
@@ -85,5 +87,10 @@ public class CustomerController {
 	public void readCustomersFromFile() {
 //		customerFile.readFromFile();
 		Customer.customerList = customerFile.readFromFile();
+	}
+	
+	public Account getCustomerAccount() {
+		List<Account> customerAccounts =  customer.getCustomerAccounts(customerToEdit);
+		return customerAccounts.get(0);
 	}
 }

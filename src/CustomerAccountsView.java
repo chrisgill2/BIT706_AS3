@@ -75,7 +75,7 @@ public class CustomerAccountsView extends BaseForm{
 		btnManageAccounts.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				Account account = controller.createNewAccount("EveryDay");
+				Account account = controller.getCustomerAccount();
 				AccountForm accountForm = new AccountForm(account, "EveryDay");
 				accountForm.open();
 			}

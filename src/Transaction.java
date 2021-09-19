@@ -1,6 +1,8 @@
 
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+
 import org.eclipse.swt.widgets.List;
 
 public class Transaction {
@@ -37,6 +39,8 @@ public class Transaction {
 		// Update the applicable account details instance
 		switch (account.accountName) {
 			case "EveryDay":
+				account.transactionList = new ArrayList<String>();
+				account.transactionList.add(transaction);
 				EveryDayAccountDetails.setInstance((EveryDayAccount)account);
 				((EveryDayAccount)(account)).updateAccountDetails("Deposit", depositAmount);
 				EveryDayAccountDetails.transactionList.add(transaction);
@@ -168,8 +172,8 @@ public class Transaction {
 		switch (account.accountName) {
 		case "EveryDay":
 			//thing
-			if(EveryDayAccountDetails.transactionList != null) {
-				for (String transaction :EveryDayAccountDetails.transactionList) {
+			if(account.transactionList != null) {
+				for (String transaction :account.transactionList) {
 					transactionList.add(transaction);
 				}
 			}
