@@ -82,4 +82,6 @@ public abstract  class Account implements Serializable{
         }
         return true;
     }
+
+	protected abstract int getFailedTransactionFee();
 }

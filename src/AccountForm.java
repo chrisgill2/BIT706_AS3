@@ -1,5 +1,4 @@
 
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -22,7 +21,7 @@ public class AccountForm extends BaseForm {
 	private Button btnWithdrawMoney;
 	private Button btnCalculateInterest;
 	private Button btnAccountInformation;
-	
+
 	private static final String ACCOUNT_INFORMATION = "Account Information";
 	private static final String ACCOUNT_DETAILS = "Account Details";
 	private static final String HOME = "Home";
@@ -68,7 +67,7 @@ public class AccountForm extends BaseForm {
 		transactionList = new List(shell, SWT.BORDER);
 		transactionList.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLUE));
 		transactionList.setBounds(324, 116, 224, 315);
-		
+
 		// Display all transactions for the account
 		transaction.addTransactionToList(transactionList);
 
@@ -108,7 +107,7 @@ public class AccountForm extends BaseForm {
 			}
 		});
 	}
-	
+
 	/**
 	 * Display the account information on button click.
 	 */
@@ -150,48 +149,26 @@ public class AccountForm extends BaseForm {
 	}
 
 	/**
-	 * Calculate interest and add to balance
-	 * on button click.
+	 * Calculate interest and add to balance on button click.
 	 */
 	private void calculateInterestOnClick() {
 		btnCalculateInterest.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				transaction.addInterestToAccount();
-				if(transaction.getinterestAddedSuccessIndicator()) {
-					addLatestTransactionToList();
-					displayMessage(SUCCESSFUL_TRANSACTION, INTEREST_ADDED);	
+				if (transaction.getinterestAddedSuccessIndicator()) {
+					account.transactionList.add(account.lastTransaction);
+					displayMessage(SUCCESSFUL_TRANSACTION, INTEREST_ADDED);
+					transactionList.add(account.lastTransaction);
 				} else {
 					displayMessage(ERROR, NO_INTEREST_ADDED);
 				}
 			}
 		});
 	}
-	
-	/*
-	 * Adds the latest transaction to transaction list
-	 * and displays on screen.
-	 */
-	private void addLatestTransactionToList() {
-		// Get the the transactions for the applicable account
-		switch (account.accountName) {
-			case "EveryDay":
-				account.transactionList.add(account.lastTransaction);
-				break;
-			case "Omni":
-				transactionPosition = OmniAccountDetails.transactionList.size() -1;
-				transactionList.add(OmniAccountDetails.transactionList.get(transactionPosition));
-				break;
-			case "Investment":
-				transactionPosition = InvestmentAccountDetails.transactionList.size() -1;
-				transactionList.add(InvestmentAccountDetails.transactionList.get(transactionPosition));
-				break;
-		}
-	}
 
 	/*
-	 * Reads the account details from a singleton
-	 * and displays on screen.
+	 * Reads the account details from a singleton and displays on screen.
 	 */
 	private void displayAccountDetails() {
 		// Check for the latest transaction -- not displayed in this iteration

@@ -11,13 +11,12 @@ public class CustomerAccountsView extends BaseForm{
 
 	private List customerAccountsListBox;
 	private Button btnAddAccount;
-	private Button btnDeposit;
 	private Button btnWithdraw;
 	private Button btnTransfer;
 	private Button btnCustomers;
 	private Button btnManageAccounts;
 	private int buttonXPosition = 289;
-	private int selectedCustomerPosition;
+	private int selectedCustomerAccountPosition;
 	
 	/**
 	 * Open the window.
@@ -75,9 +74,14 @@ public class CustomerAccountsView extends BaseForm{
 		btnManageAccounts.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				Account account = controller.getCustomerAccount();
-				AccountForm accountForm = new AccountForm(account, "EveryDay");
-				accountForm.open();
+				selectedCustomerAccountPosition = customerAccountsListBox.getSelectionIndex();
+				if (customerAccountSelected()) {
+					controller.selectedAccount = customerAccountsListBox.getItems()[selectedCustomerAccountPosition];
+					shell.close();
+					Account account = controller.getCustomerAccount();
+					AccountForm accountForm = new AccountForm(account, account.getAccountName());
+					accountForm.open();
+				}
 			}
 		});
 	}
@@ -130,7 +134,7 @@ public class CustomerAccountsView extends BaseForm{
 			displayMessage("No Customer Account Selected", "Please select an account.");
 			return false;
 		}
-		selectedCustomerPosition = customerAccountsListBox.getSelectionIndex();
+		selectedCustomerAccountPosition = customerAccountsListBox.getSelectionIndex();
 		return true;
 	}
 

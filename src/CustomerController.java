@@ -7,6 +7,7 @@ public class CustomerController {
 	private CustomerFile customerFile = new CustomerFile();
 	public String customerToEdit;
 	public boolean accountAdded;
+	public String selectedAccount;
 	
 	public List<Customer> getCustomers() {
 //		customerFile.writeToFile(Customer.customerList);	
@@ -91,6 +92,17 @@ public class CustomerController {
 	
 	public Account getCustomerAccount() {
 		List<Account> customerAccounts =  customer.getCustomerAccounts(customerToEdit);
-		return customerAccounts.get(0);
+		return customerAccounts.get(getCustomerPositionInList(customerAccounts));
+	}
+	
+	private int getCustomerPositionInList(List<Account> customerAccounts) {
+		int pos = 0;
+		for (Account account: customerAccounts) {
+			if (selectedAccount.equals(account.getAccountName())){
+				return pos;
+			}
+			pos++;
+		}
+		return -1;
 	}
 }

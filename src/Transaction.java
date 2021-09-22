@@ -13,15 +13,16 @@ public class Transaction {
 	private boolean interestAddedSuccessIndicator = false;
 	private double balance;
 	private double interestEarned = 0.0;
+	CustomerFile customerFile = new CustomerFile();
 	
 	
 	public Transaction(Account account){
 		this.account = account;
+		if (account.transactionList == null) {
+			account.transactionList = new ArrayList<String>();
+		}
 	}
-	
-//	public boolean getWithdrawalSuccessIndicator() {
-//		return withdrawalSuccessIndicator;
-//	}
+
 	
 	public boolean getinterestAddedSuccessIndicator() {
 		return interestAddedSuccessIndicator;
@@ -32,30 +33,15 @@ public class Transaction {
 		if (depositAmount == 0) {
 			return;
 		}
+		
 		String depositAmountString = df2.format(depositAmount);
 		account.deposit(depositAmount);
-		String transaction = "Deposit       $" + depositAmountString;
 		
-		// Update the applicable account details instance
-		switch (account.accountName) {
-			case "EveryDay":
-				account.transactionList = new ArrayList<String>();
-				account.transactionList.add(transaction);
-				EveryDayAccountDetails.setInstance((EveryDayAccount)account);
-				((EveryDayAccount)(account)).updateAccountDetails("Deposit", depositAmount);
-				EveryDayAccountDetails.transactionList.add(transaction);
-				break;
-			case "Investment":
-				((InvestmentAccount)(account)).updateAccountDetails("Deposit", depositAmount);
-				InvestmentAccountDetails.transactionList.add(transaction);
-				break;
-			case "Omni":
-				((OmniAccount)(account)).updateAccountDetails("Deposit", depositAmount);
-				OmniAccountDetails.transactionList.add(transaction);
-				break;
-		}
+		String transaction = "Deposit       $" + depositAmountString;
+		account.transactionList.add(transaction);
+		customerFile.writeToFile(Customer.customerList);
+		
 	}
-	
 	
 	public void performWithdrawal(double withdrawalAmount) throws FailedWithdrawalException {
 		double transactionAmount = withdrawalAmount;
@@ -64,46 +50,20 @@ public class Transaction {
 		
 		// Update the account details if withdrawal was successful
 		boolean sufficientFunds = account.withdrawalPerformed(withdrawalAmount);
-		if (sufficientFunds) {		
-			// Update the applicable account details instance
-			switch (account.accountName) {
-				case "EveryDay":
-					if (!sufficientFunds) {
-						transaction = "Failed Transaction    $" + EveryDayAccount.FAILED_TRANSACTION_FEE;
-						((EveryDayAccount) account).updateAccountDetails("Failed Transaction", EveryDayAccount.FAILED_TRANSACTION_FEE);
-					} else {
-					((EveryDayAccount)(account)).updateAccountDetails("Withdrawal", transactionAmount);
-					}
-					EveryDayAccountDetails.transactionList.add(transaction);
-					break;
-				case "Investment":
-					if (!sufficientFunds) {
-						transactionAmount = InvestmentAccount.FAILED_TRANSACTION_FEE * -1;
-						transaction = "Failed Transaction    $" + InvestmentAccount.FAILED_TRANSACTION_FEE;
-						((InvestmentAccount) account).updateAccountDetails("Failed Transaction", InvestmentAccount.FAILED_TRANSACTION_FEE);
-					} else {
-						((InvestmentAccount)(account)).updateAccountDetails("Withdrawal", transactionAmount);
-					}
-					InvestmentAccountDetails.transactionList.add(transaction);
-					break;
-				case "Omni":
-					if (!sufficientFunds) {
-						transactionAmount = OmniAccount.FAILED_TRANSACTION_FEE * -1;
-						transaction = "Failed Transaction    $" + OmniAccount.FAILED_TRANSACTION_FEE;
-						((OmniAccount) account).updateAccountDetails("Failed Transaction", OmniAccount.FAILED_TRANSACTION_FEE);
-					} else {
-						((OmniAccount)(account)).updateAccountDetails("Withdrawal", transactionAmount);
-					}
-					OmniAccountDetails.transactionList.add(transaction);
-					break;
-			}
-		} 
-		else {
+
+		if (!sufficientFunds) {
+			transaction = "Failed Transaction    $" + account.getFailedTransactionFee();
+			account.updateAccountDetails("Failed Transaction	", account.getFailedTransactionFee());
+			account.transactionList.add(account.lastTransaction);
+			customerFile.writeToFile(Customer.customerList);
 			throw new FailedWithdrawalException(failedWithdrawalMessage);
+		} else {
+			account.updateAccountDetails("Withdrawal", transactionAmount);
 		}
+		account.transactionList.add(transaction);
+		customerFile.writeToFile(Customer.customerList);
 	}
 	
-
 	public void addInterestToAccount() {
 		double interestAmount;
 		String interestAmountString;
@@ -113,10 +73,11 @@ public class Transaction {
 			interestAmount = calculateOmniInterest();
 			interestAmountString = df2.format(interestAmount);
 			if (interestAmount > 0) {
-				((OmniAccount) account).addInterest(interestAmount);
-				((OmniAccount) account).updateAccountDetails("Interest", interestAmount);
+				account.addInterest(interestAmount);
+				account.updateAccountDetails("Interest       ", interestAmount);
 				String transaction = "Interest       $" + interestAmountString;
-				OmniAccountDetails.transactionList.add(transaction);
+				account.transactionList.add(transaction);
+				customerFile.writeToFile(Customer.customerList);
 				interestAddedSuccessIndicator = true;
 				return;
 			}
@@ -126,11 +87,13 @@ public class Transaction {
 		// Investment Account interest calculation
 		interestAmount = calculateInvestmentInterest();
 		interestAmountString = df2.format(interestAmount);
+		
 		if (interestAmount > 0) {
-			((InvestmentAccount) account).addInterest(interestAmount);
-			((InvestmentAccount) account).updateAccountDetails("Interest", interestAmount);
+			account.addInterest(interestAmount);
+			account.updateAccountDetails("Interest       ", interestAmount);
 			String transaction = "Interest       $" + interestAmountString;
-			InvestmentAccountDetails.transactionList.add(transaction);
+			account.transactionList.add(transaction);
+			customerFile.writeToFile(Customer.customerList);
 			interestAddedSuccessIndicator =  true;
 		} 
 	}
@@ -139,11 +102,9 @@ public class Transaction {
 	 *  Calculates interest for
 	 *  the investment account.
      */
-    protected double calculateInvestmentInterest(){
-    	balance = ((InvestmentAccount) account).balance;
-    	if (balance > 0) {
-	        interestEarned = balance * ((InvestmentAccount) account).interestRate / 100;
-	        balance += interestEarned;
+    private double calculateInvestmentInterest(){
+    	if (account.balance > 0) {
+	        interestEarned = account.balance * account.interestRate / 100;
     	}
         return interestEarned;
 }
@@ -152,12 +113,10 @@ public class Transaction {
 	 *  Interest will be calculated for the Omni account if
 	 *  the balance exceeds $1000.
      */
-    protected double calculateOmniInterest(){
+    private double calculateOmniInterest(){
         // Add interest if balance exceeds 1000
-    	balance = ((OmniAccount) account).balance;
-        if (balance > 1000){
-            interestEarned = balance * ((OmniAccount) account).interestRate / 100;
-            balance += interestEarned;
+        if (account.balance > 1000){
+            interestEarned = account.balance * account.interestRate / 100;
         }
         return interestEarned;
     }
@@ -168,26 +127,10 @@ public class Transaction {
 	 * to the account singleton for future reference.
 	 */
 	public List addTransactionToList(List transactionList) {
-		// Get the the transactions for the applicable account
-		switch (account.accountName) {
-		case "EveryDay":
-			//thing
-			if(account.transactionList != null) {
-				for (String transaction :account.transactionList) {
-					transactionList.add(transaction);
-				}
-			}
-			break;
-		case "Omni":
-			for (String transaction :OmniAccountDetails.transactionList) {
+		if(account.transactionList != null) {
+			for (String transaction :account.transactionList) {
 				transactionList.add(transaction);
 			}
-			break;
-		case "Investment":
-			for (String transaction :InvestmentAccountDetails.transactionList) {
-				transactionList.add(transaction);
-			}
-			break;
 		}
 		return transactionList;
 	}
