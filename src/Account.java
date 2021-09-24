@@ -20,9 +20,6 @@ public abstract  class Account implements Serializable{
     	this.accountID = accountID;
     	this.customer = customer;
     	this.balance = 0;
-    	if (customer.getIsBankEmployee()) {
-    		this.failedTransactionFee = failedTransactionFee / 2;
-    	}
     }
     
     public int getAccountID() {

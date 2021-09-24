@@ -67,6 +67,7 @@ public class EditCustomerView extends ModifyCustomerForm{
 			textName.setText(customerDetails.get("name"));
 			textEmail.setText(customerDetails.get("email"));
 			textAddress.setText(customerDetails.get("address"));
+			btnIsEmployee.setSelection(controller.isBankEmployee);
 		}
 	}
 }

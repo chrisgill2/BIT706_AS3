@@ -27,6 +27,9 @@ public class InvestmentAccount extends Account {
     }
     
     public int getFailedTransactionFee() {
+    	if (customer.getIsBankEmployee()) {
+    		return failedTransactionFee / 2;
+    	}
     	return failedTransactionFee;
     }
     

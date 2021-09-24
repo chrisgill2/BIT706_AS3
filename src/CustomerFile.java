@@ -12,7 +12,7 @@ public class CustomerFile {
     public void writeToFile(List<Customer> customerList) {
     	try {
 //    		thing -- clear file
-    		new FileOutputStream("customers.txt").close();
+//    		new FileOutputStream("customers.txt").close();
 			FileOutputStream f = new FileOutputStream(new File("customers.txt"));
 			ObjectOutputStream o = new ObjectOutputStream(f);
 

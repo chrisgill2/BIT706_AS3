@@ -19,6 +19,7 @@ public class AccountForm extends BaseForm {
 	private Button btnHome;
 	private Button btnDepositMoney;
 	private Button btnWithdrawMoney;
+	private Button btnTransferMoney;
 	private Button btnCalculateInterest;
 	private Button btnAccountInformation;
 
@@ -82,15 +83,21 @@ public class AccountForm extends BaseForm {
 		// Deposit money button
 		btnDepositMoney = createButton(DEPOSIT, buttonXPosition, 252);
 		openDepositMoneyWindowOnClick();
-
+		
+		// Transfer money button -- only display if there are at least 2 accounts
+		if (controller.getCustomerAccountNames().size() > 1) {
+			btnTransferMoney = createButton("Transfer", buttonXPosition, 321);
+			openTransferMoneyWindowOnClick();
+		}
+		
 		// Calculate interest button -- hide for Every Day account
 		if (!accountType.toLowerCase().equals("everyday")) {
-			btnCalculateInterest = createButton(CALCULATE_INTEREST, buttonXPosition, 321);
+			btnCalculateInterest = createButton(CALCULATE_INTEREST, buttonXPosition, 390);
 			calculateInterestOnClick();
 		}
 
 		// Home page button
-		btnHome = createButton(HOME, buttonXPosition, 390);
+		btnHome = createButton(HOME, buttonXPosition, 459);
 		openHomePageOnClick();
 	}
 
@@ -144,6 +151,21 @@ public class AccountForm extends BaseForm {
 				shell.close();
 				TransactionForm withdrawMoneyForm = new TransactionForm(account, WITHDRAW);
 				withdrawMoneyForm.open();
+			}
+		});
+	}
+	
+	/**
+	 * Open the transfer window on button click.
+	 */
+	private void openTransferMoneyWindowOnClick() {
+		btnTransferMoney.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				controller.setTransferFromAccount(account);
+				shell.close();
+				TransferView transferForm = new TransferView(account);
+				transferForm.open();
 			}
 		});
 	}

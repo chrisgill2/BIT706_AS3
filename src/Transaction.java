@@ -11,6 +11,7 @@ public class Transaction {
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	private boolean withdrawalSuccessIndicator = false;
 	private boolean interestAddedSuccessIndicator = false;
+	private boolean transferSuccessIndicator = false;
 	private double balance;
 	private double interestEarned = 0.0;
 	CustomerFile customerFile = new CustomerFile();
@@ -26,6 +27,10 @@ public class Transaction {
 	
 	public boolean getinterestAddedSuccessIndicator() {
 		return interestAddedSuccessIndicator;
+	}
+	
+	public boolean getTransferSuccessIndicator() {
+		return transferSuccessIndicator;
 	}
 	
 	public void recordDeposit(double depositAmount) {
@@ -98,6 +103,20 @@ public class Transaction {
 		} 
 	}
 	
+	public void transferBetweenAccounts(Account toAccount, double transferAmount) {
+		try {
+			// Withdraw money from the account being transferred from
+			performWithdrawal(transferAmount);
+			
+			// Deposit money in the account being transferred to
+			this.account = toAccount;
+			recordDeposit(transferAmount);
+			transferSuccessIndicator = true;
+		} catch (FailedWithdrawalException e) {
+			transferSuccessIndicator = false;
+		}
+	}
+	
     /**
 	 *  Calculates interest for
 	 *  the investment account.
@@ -127,9 +146,11 @@ public class Transaction {
 	 * to the account singleton for future reference.
 	 */
 	public List addTransactionToList(List transactionList) {
-		if(account.transactionList != null) {
+		if(account.transactionList != null && account.transactionList.size() > 0) {
 			for (String transaction :account.transactionList) {
-				transactionList.add(transaction);
+				if (transaction != null){
+					transactionList.add(transaction);
+				}
 			}
 		}
 		return transactionList;

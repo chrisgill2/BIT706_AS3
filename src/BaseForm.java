@@ -81,6 +81,16 @@ public class BaseForm {
 	}
 	
 	/**
+	 * Create a new radio button.
+	 */
+	protected Button createRadioButton(String buttonText, int xPosition, int yPosition) {
+		Button radioButton = new Button(shell, SWT.RADIO);
+		radioButton.setBounds(xPosition, yPosition, 150, 18);
+		radioButton.setText(buttonText);
+		return radioButton;
+	}
+	
+	/**
 	 * Displays a message box with a title
 	 * and message.
 	 */

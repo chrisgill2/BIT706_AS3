@@ -32,6 +32,9 @@ public class OmniAccount extends Account{
 	}
 	
     public int getFailedTransactionFee() {
+    	if (customer.getIsBankEmployee()) {
+    		return failedTransactionFee / 2;
+    	}
     	return failedTransactionFee;
     }
     

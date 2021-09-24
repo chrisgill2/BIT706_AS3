@@ -40,19 +40,13 @@ public class AddCustomerAccountForm extends BaseForm {
 		createBaseContents("Add New Account");
 
 		// Everyday account radio button
-		btnEveryDayAccount = new Button(shell, SWT.RADIO);
-		btnEveryDayAccount.setBounds(250, 135, 150, 18);
-		btnEveryDayAccount.setText("EveryDay Account");
+		btnEveryDayAccount = createRadioButton("EveryDay Account", 250, 135);
 		
 		// Investment account radio button
-		btnInvestmentAccount = new Button(shell, SWT.RADIO);
-		btnInvestmentAccount.setBounds(250, 190, 150, 18);
-		btnInvestmentAccount.setText("Investment Account");
+		btnInvestmentAccount = createRadioButton("Investment Account", 250, 190);
 		
 		// Omni account radio button
-		btnOmniAccount = new Button(shell, SWT.RADIO);
-		btnOmniAccount.setBounds(250, 244, 150, 18);
-		btnOmniAccount.setText("Omni Account");
+		btnOmniAccount = createRadioButton("Omni Account", 250, 244);
 		
 		// Add Account Button
 		btnAddAccount = createLargeButton("Add", 91, 344);

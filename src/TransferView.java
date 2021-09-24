@@ -13,22 +13,26 @@ import org.eclipse.wb.swt.SWTResourceManager;
 public class TransferView extends BaseForm{
 
 	protected Shell shlAbcBank = super.shell;
-	protected Label lblMessage;
-	protected Text textBoxAmount;
-	protected Button btnCancel;
-	protected Button btnTransaction;
+	private CustomerView customerView = new CustomerView();
+	private Text textBoxAmount;
+	private Button btnCancel;
+	private Button btnTransfer;
+	private Account toAccount;
+	private Account fromAccount;
+	private Combo transferToAccount;
+	private double transferAmount;
+	private String toAccountSelection;
 	
-	protected final int buttonYPosition = 300;
+	private final int buttonYPosition = 300;
 	protected String transactionType;
 	
 	private static final String INVALID_AMOUNT_ERROR = "Please enter a valid amount.";
 	private static final String INVALID_AMOUNT = "Invalid amount.";
-	private static final String SUCCESSFUL_TRANSACTION = " was successful";
-	private static final String INSUFFICIENT_FUNDS = "Insufficient funds for withdrawal.";
-	private static final String FAILED_TRANSACTION = "Failed Transaction";
-	private static final String SUCCESS = "Successful Transaction";
 
 
+	public TransferView(Account fromAccount) {
+		this.fromAccount = fromAccount;
+	}
 	/**
 	 * Open the window.
 	 * @wbp.parser.entryPoint
@@ -49,33 +53,33 @@ public class TransferView extends BaseForm{
 	 * Create contents of the window.
 	 */
 	protected void createTransactionFormContents() {
-		createBaseContents(transactionType + " Money");
+		createBaseContents("Transfer Money");
+		
+		// Transfer to account label
+		Label lblAccountTransferFrom = new Label(shlAbcBank, SWT.NONE);
+		lblAccountTransferFrom.setBounds(140, 150, 200, 20);
+		lblAccountTransferFrom.setText("Transfer From " + fromAccount.getAccountName() + " Account");
+
+		// Transfer from account label
+		Label lblAccountTransferTo = new Label(shlAbcBank, SWT.NONE);
+		lblAccountTransferTo.setBounds(140, 200, 140, 14);
+		lblAccountTransferTo.setText("Transfer To Account");
+		
+		// Account for transfer to
+		transferToAccount = createTransferAccountCombo(195);
+
 		
 		// Amount to deposit text box
-		textBoxAmount = new Text(shlAbcBank, SWT.BORDER);
-		textBoxAmount.setBounds(263, 200, 190, 20);
-		textBoxAmount.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		textBoxAmount = createText(300, 250);
 		
 		// Amount label
 		Label lblAmount = new Label(shlAbcBank, SWT.NONE);
-		lblAmount.setBounds(140, 200, 59, 14);
+		lblAmount.setBounds(140, 250, 59, 14);
 		lblAmount.setText("Amount");
-		
-		// Transfer to account label
-		Label lblAccountTransfer = new Label(shlAbcBank, SWT.NONE);
-		lblAccountTransfer.setBounds(140, 150, 120, 14);
-		lblAccountTransfer.setText("Transfer To Account");
-		
-		Combo combo = new Combo(shell, SWT.NONE);
-		combo.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		combo.setBounds(263, 145, 190, 35);
-		combo.add("EveryDay");
-		combo.add("Omni");
-		combo.add("Investment");
 
 
-		btnTransaction = createButton("Transfer", 150, buttonYPosition);
-		performTransactionOnClick();
+		btnTransfer = createButton("Transfer", 150, buttonYPosition);
+		performTransferOnClick();
 		
 
 		// Cancel button
@@ -93,7 +97,7 @@ public class TransferView extends BaseForm{
 			@Override
 			public void mouseDown(MouseEvent e) {
 				shlAbcBank.close();
-//				accountForm.open();
+				customerView.open();
 			}
 		});
 	}
@@ -123,31 +127,64 @@ public class TransferView extends BaseForm{
 	 * Record the transaction
 	 * on button click.
 	 */	
-	private void performTransactionOnClick() {
-		btnTransaction.addMouseListener(new MouseAdapter() {
+	private void performTransferOnClick() {
+		btnTransfer.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				// Exit method if amount is invalid
-				double amount = readAmountFromTextBox();
-				if (amount == 0) {
+				transferAmount = readAmountFromTextBox();
+				if (transferAmount == 0) {
 					textBoxAmount.setText("");
 					return;
 					};
-				
-//				if (transactionType.equals("Deposit")) {
-//					transaction.recordDeposit(amount);
-//					displayMessage(SUCCESS, transactionType + SUCCESSFUL_TRANSACTION);
-//				} else {
-//					transaction.performWithdrawal(amount);
-//					if (!transaction.getWithdrawalSuccessIndicator()) {
-//						displayMessage(FAILED_TRANSACTION, INSUFFICIENT_FUNDS);
-//					} else {
-//						displayMessage(SUCCESS, transactionType + SUCCESSFUL_TRANSACTION);
-//					}
-//				}
-//				shlAbcBank.close();
-//				accountForm.open();
+				if (validateAccountSelection()) {
+					performTransfer();
+				};
 			}
 		});
+	}
+	
+	private void performTransfer() {
+		toAccount = controller.getCustomerAccountByName(toAccountSelection);
+		Transaction transaction = new Transaction(fromAccount);
+		transaction.transferBetweenAccounts(toAccount, transferAmount);
+		
+		
+		
+		if (!transaction.getTransferSuccessIndicator()){
+			displayMessage("Insufficient Funds", "Insufficient funds for transfer.");
+		} else {
+			toAccount.deposit(transferAmount);
+			displayMessage("Transaction successful", "Transfer was successful.");
+		};
+	}
+	
+	private Combo createTransferAccountCombo(int yPosition) {
+		Combo transferAccount = new Combo(shell, SWT.DROP_DOWN);
+		transferAccount.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		transferAccount.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		transferAccount.setBounds(300, yPosition, 220, 35);
+		
+		// Get the list of available accounts to transfer to
+		for(String accountName: controller.getCustomerAccountNames()){
+			if (!accountName.equals(fromAccount.getAccountName()))
+				transferAccount.add(accountName);
+		}
+	
+		return transferAccount;
+	}
+	
+	private boolean validateAccountSelection() {
+		boolean validAccountSelection = true;
+		toAccountSelection = transferToAccount.getText();
+		
+		if (transferToAccount.getText().equals("")) {
+			displayMessage("Account not selected.", "Please select an account to transfer to.");
+			validAccountSelection = false;
+		} else {
+			controller.setTransferToAccount(toAccountSelection);
+		}
+
+		return validAccountSelection;
 	}
 }
