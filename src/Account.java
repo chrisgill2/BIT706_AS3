@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract  class Account implements Serializable{
 
@@ -9,6 +11,7 @@ public abstract  class Account implements Serializable{
     protected int overDraftAmount;
     protected String accountName;
     protected String lastTransaction;
+    protected List<String> transactionList = new ArrayList<String>();
     protected Customer customer;
 	
     
@@ -16,9 +19,7 @@ public abstract  class Account implements Serializable{
     	this.accountName = accountName;
     	this.accountID = accountID;
     	this.customer = customer;
-    	if (customer.getIsBankEmployee()) {
-    		this.failedTransactionFee = failedTransactionFee / 2;
-    	}
+    	this.balance = 0;
     }
     
     public int getAccountID() {
@@ -78,4 +79,6 @@ public abstract  class Account implements Serializable{
         }
         return true;
     }
+
+	protected abstract int getFailedTransactionFee();
 }

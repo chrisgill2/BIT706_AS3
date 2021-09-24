@@ -12,6 +12,8 @@ public class Customer implements Serializable{
 	private boolean isBankEmployee;
 	static List <Customer> customerList;
 	private List <Account> customerAccounts;
+	private Account transferFromAccount;
+	private Account transferToAccount;
 	
 	public Customer() {
 		customerAccounts = new ArrayList<Account>();
@@ -37,6 +39,18 @@ public class Customer implements Serializable{
 		return isBankEmployee;
 	}
 	
+	public Account getTransferFromAccount() {
+		return this.transferFromAccount;
+	}
+	
+	public Account getTransferToAccount() {
+		return this.transferToAccount;
+	}
+	
+	public Customer getCustomerByName(String name) {
+		return customerList.get(getCustomerPositionInList(name));
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -53,6 +67,19 @@ public class Customer implements Serializable{
 		this.address = address;
 	}
 	
+	public void setTransferFromAccount(Account transferFromAccount) {
+		this.transferFromAccount = transferFromAccount;
+	}
+	
+	public void setTransferToAccount(Account transferToAccount) {
+		this.transferToAccount = transferToAccount;
+	}
+	
+	public void setIsBankEmployee(boolean isBankEmployee) {
+		this.isBankEmployee = isBankEmployee;
+	}
+	
+	
 	public void addCustomer(HashMap<String, String> customerDetails, boolean isBankEmployee) {
 		Customer customer = new Customer();
 		customer.name = customerDetails.get("name");
@@ -61,10 +88,6 @@ public class Customer implements Serializable{
 		customer.isBankEmployee = isBankEmployee;
 		customer.customerID = getNewCustomerID();
 		customerList.add(customer);
-		
-		
-//		customerFile.writeToFile(customerList);
-//		List<Customer> customers = customerFile.readFromFile();
 	}
 	
 	/* 
@@ -77,6 +100,7 @@ public class Customer implements Serializable{
 		customerDetails.put("name", customer.getCustomerName());
 		customerDetails.put("email", customer.getCustomerEmail());
 		customerDetails.put("address", customer.getCustomerAddress());
+		isBankEmployee = customer.isBankEmployee;
 		return customerDetails;
 	}
 	
@@ -90,6 +114,7 @@ public class Customer implements Serializable{
 		customer.name = customerDetails.get("name");
 		customer.email = customerDetails.get("email");
 		customer.address = customerDetails.get("address");
+		customer.isBankEmployee = isBankEmployee;
 	}
 	
 	public void deleteCustomer(int customerPositionInList) {
@@ -114,7 +139,7 @@ public class Customer implements Serializable{
 	 */
 	private String getNewCustomerID() {
 		List <Integer> customerIDList = new ArrayList<Integer>();
-		if (customerList != null) {
+		if (customerList != null && customerList.size() > 0) {
 			// Create a list of customer IDs
 			for (Customer customer: customerList) {
 				int customerID = Integer.valueOf(customer.getCustomerID());
@@ -135,7 +160,18 @@ public class Customer implements Serializable{
 	public List <Account> getCustomerAccounts(String currentCustomerName) {
 		Customer customer = customerList.get(getCustomerPositionInList(currentCustomerName));
 		return customer.customerAccounts;
-		
+	}
+	
+	public Account getCustomerAccountByName(String customerName, String accountName) {
+		List <Account> accounts = getCustomerAccounts(customerName);
+		Account selectedAccount = null;
+		for (Account account: accounts) {
+			if (accountName.equals(account.getAccountName())){
+				selectedAccount = account;
+				break;
+			}
+		}
+		return selectedAccount;
 	}
 
 	

@@ -6,11 +6,13 @@ public class CustomerController {
 	private Customer customer = new Customer();
 	private CustomerFile customerFile = new CustomerFile();
 	public String customerToEdit;
+	public boolean isBankEmployee;
 	public boolean accountAdded;
+	public String selectedAccount;
+	public Account transferFromAccount;
+	public Account transferToAccount;
 	
 	public List<Customer> getCustomers() {
-//		customerFile.writeToFile(Customer.customerList);	
-		
 		Customer.customerList = customerFile.readFromFile();
 		return Customer.customerList;
 	}
@@ -24,24 +26,36 @@ public class CustomerController {
 		}
 		return customerNames;
 	}
+	
+	public void setTransferFromAccount(Account account) {
+		transferFromAccount = account;
+	}
+	
+	public void setTransferToAccount(String accountName) {
+		transferToAccount = customer.getCustomerAccountByName(customerToEdit, accountName);
+	}
 
 	public void deleteCustomer(int customerPositionInList) {
 		customer.deleteCustomer(customerPositionInList);
+		customerFile.writeToFile(Customer.customerList);
 	}
 	
 	public void addCustomerToList(HashMap<String, String> customerDetails, boolean isBankEmployee) {
+		Customer.customerList = customerFile.readFromFile();
 		customer.addCustomer(customerDetails, isBankEmployee);
-		
-		// thing
 		customerFile.writeToFile(Customer.customerList);
 	}
 	
 	public void editCustomer(HashMap<String, String> customerDetails) {
+		customer.setIsBankEmployee(isBankEmployee);
 		customer.editCustomer(customerToEdit, customerDetails);
+		customerFile.writeToFile(Customer.customerList);
 	}
 	
 	public HashMap<String, String> getCustomerEditDetails() {
-		return customer.getCustomerDetailsByName(customerToEdit);
+		HashMap<String, String> customerDetails = customer.getCustomerDetailsByName(customerToEdit);
+		isBankEmployee = customer.getIsBankEmployee();
+		return customerDetails;
 	}
 	
 	public List <String> getCustomerAccountNames() {
@@ -56,15 +70,19 @@ public class CustomerController {
 	
 	public void addCustomerAccount(String accountType) {
 		Account account = createNewAccount(accountType);
+		customer = customer.getCustomerByName(customerToEdit);
 		if (getCustomerAccountNames().contains(account.getAccountName())) {
 			accountAdded = false;
 		} else {
 			customer.addCustomerAccount(customerToEdit, account);
+			// thing
+			customerFile.writeToFile(Customer.customerList);
 			accountAdded = true;
 		}
 	}
 	
 	public Account createNewAccount(String accountType) {
+		customer = customer.getCustomerByName(customerToEdit);
 		Account account;
 		switch (accountType) {
 		case "EveryDay":
@@ -82,8 +100,23 @@ public class CustomerController {
 		return account;
 	}
 	
-	public void readCustomersFromFile() {
-//		customerFile.readFromFile();
-		Customer.customerList = customerFile.readFromFile();
+	public Account getCustomerAccountByName(String accountName) {
+		return customer.getCustomerAccountByName(customerToEdit, accountName);
+	}
+	
+	public Account getCustomerAccount() {
+		List<Account> customerAccounts =  customer.getCustomerAccounts(customerToEdit);
+		return customerAccounts.get(getCustomerPositionInList(customerAccounts));
+	}
+	
+	private int getCustomerPositionInList(List<Account> customerAccounts) {
+		int pos = 0;
+		for (Account account: customerAccounts) {
+			if (selectedAccount.equals(account.getAccountName())){
+				return pos;
+			}
+			pos++;
+		}
+		return -1;
 	}
 }

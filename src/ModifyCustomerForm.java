@@ -20,7 +20,7 @@ public class ModifyCustomerForm extends BaseForm{
 	boolean fieldEntryError;
 	HashMap<String, String> customerDetails = new HashMap<String, String>();
 	
-	Button btnCheckButton;
+	Button btnIsEmployee;
 	
 	private final int textBoxXPosition = 200;
 
@@ -61,9 +61,9 @@ public class ModifyCustomerForm extends BaseForm{
 		cancelOnClick();
 		
 		// Bank Employee checkbox
-		btnCheckButton = new Button(shell, SWT.CHECK);
-		btnCheckButton.setBounds(240, 220, 130, 18);
-		btnCheckButton.setText("Bank Employee");
+		btnIsEmployee = new Button(shell, SWT.CHECK);
+		btnIsEmployee.setBounds(240, 220, 130, 18);
+		btnIsEmployee.setText("Bank Employee");
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class ModifyCustomerForm extends BaseForm{
 	}
 	
 	public boolean employeeCheckboxSelected() {
-		if (btnCheckButton.getSelection()) {
+		if (btnIsEmployee.getSelection()) {
 			return true;
 		}
 		return false;
@@ -121,6 +121,7 @@ public class ModifyCustomerForm extends BaseForm{
 		customerDetails.put("name", readNameFromTextBox());
 		customerDetails.put("email", readEmailFromTextBox());
 		customerDetails.put("address", readAddressFromTextBox());
+		controller.isBankEmployee = btnIsEmployee.getSelection();
 		return customerDetails;
 	}
 
