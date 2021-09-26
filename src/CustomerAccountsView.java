@@ -13,7 +13,7 @@ public class CustomerAccountsView extends BaseForm{
 	private Button btnAddAccount;
 	private Button btnCustomers;
 	private Button btnManageAccounts;
-	private int buttonXPosition = 289;
+	private int buttonXPosition = 340;
 	private int selectedCustomerAccountPosition;
 	
 	/**
@@ -42,7 +42,7 @@ public class CustomerAccountsView extends BaseForm{
 		customerAccountsListBox = new List(shell, SWT.BORDER);
 		customerAccountsListBox.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		customerAccountsListBox.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		customerAccountsListBox.setBounds(20, 110, 224, 340);
+		customerAccountsListBox.setBounds(20, 110, 280, 390);
 		displayCustomerAccountList();
 		
 		//Customer Account Buttons
@@ -84,10 +84,6 @@ public class CustomerAccountsView extends BaseForm{
 		});
 	}
 	
-	/**
-	 * Open the Manage customers window
-	 * on button click.
-	 */	
 	private void openManageCustomersWindowOnClick() {
 		btnCustomers.addMouseListener(new MouseAdapter() {
 			@Override
@@ -101,7 +97,7 @@ public class CustomerAccountsView extends BaseForm{
 	
 	private void displayCustomerAccountList() {
 		customerAccountsListBox.removeAll();
-		java.util.List<String> customerAccountList = controller.getCustomerAccountNames();
+		java.util.List<String> customerAccountList = controller.getCustomerAccountDetails();
 		if (customerAccountList != null) {
 			if (customerAccountList.size() > 0) {
 				for(String accountName:customerAccountList) {

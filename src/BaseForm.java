@@ -1,6 +1,8 @@
 import java.text.DecimalFormat;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -11,6 +13,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 public class BaseForm {
 
+	Display display;
 	protected Shell shell = new Shell();
 	protected static DecimalFormat df2 = new DecimalFormat("#.##");
 	protected MessageBox messageBox = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
@@ -25,7 +28,7 @@ public class BaseForm {
 	 * Open the window.
 	 */
 	public void open() {
-		Display display = Display.getDefault();
+		display = Display.getDefault();
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
@@ -44,8 +47,11 @@ public class BaseForm {
 		shell.setText(headerText);
 		
 		Label lblHeader = new Label(shell, SWT.CENTER);
-		lblHeader.setBounds(222, 25, 129, 14);
+		lblHeader.setBounds(290, 25, 180, 30);
 		lblHeader.setText(BANK_NAME);
+		FontData[] fD = lblHeader.getFont().getFontData();
+		fD[0].setHeight(30);
+		lblHeader.setFont( new Font(display,fD[0]));
 
 	}
 	

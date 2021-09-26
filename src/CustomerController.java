@@ -75,7 +75,6 @@ public class CustomerController {
 			accountAdded = false;
 		} else {
 			customer.addCustomerAccount(customerToEdit, account);
-			// thing
 			customerFile.writeToFile(Customer.customerList);
 			accountAdded = true;
 		}
@@ -106,11 +105,24 @@ public class CustomerController {
 	
 	public Account getCustomerAccount() {
 		List<Account> customerAccounts =  customer.getCustomerAccounts(customerToEdit);
-		return customerAccounts.get(getCustomerPositionInList(customerAccounts));
+		return customerAccounts.get(getPositionInList(customerAccounts));
 	}
 	
-	private int getCustomerPositionInList(List<Account> customerAccounts) {
+	public List <String> getCustomerAccountDetails(){
+		List<Account> customerAccounts =  customer.getCustomerAccounts(customerToEdit);
+		List<String> accountDetails = new ArrayList<String>();
+		
+		for (Account account:customerAccounts) {
+			String details = account.getAccountID() + "  " + account.getAccountName() + "  $" + account.getBalance();
+			accountDetails.add(details);
+		}
+		return accountDetails;
+	}
+	
+	private int getPositionInList(List<Account> customerAccounts) {
 		int pos = 0;
+		String[] splitBySpace = selectedAccount.split("\\s+");
+		selectedAccount = splitBySpace[1];
 		for (Account account: customerAccounts) {
 			if (selectedAccount.equals(account.getAccountName())){
 				return pos;

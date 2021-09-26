@@ -34,7 +34,7 @@ public class AccountForm extends BaseForm {
 	private static final String DEPOSIT = "Deposit";
 	private static final String WITHDRAW = "Withdraw";
 
-	private final int buttonXPosition = 43;
+	private final int buttonXPosition = 340;
 	HomeForm homeForm = new HomeForm();
 
 	public AccountForm(Account account, String accountType) {
@@ -66,8 +66,12 @@ public class AccountForm extends BaseForm {
 
 		// Transactions list box
 		transactionList = new List(shell, SWT.BORDER);
-		transactionList.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLUE));
-		transactionList.setBounds(324, 116, 224, 315);
+//		transactionList.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLUE));
+//		transactionList.setBounds(324, 116, 224, 315);
+		
+		transactionList.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		transactionList.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		transactionList.setBounds(20, 110, 224, 390);
 
 		// Display all transactions for the account
 		transaction.addTransactionToList(transactionList);

@@ -9,8 +9,6 @@ import org.eclipse.swt.events.MouseEvent;
 public class HomeForm extends BaseForm{
 
 	private Button btnEveryDay;
-	private int buttonXPosition = 215;
-//	private CustomerView customerPage = new CustomerView();
 	
 
 	/**
@@ -48,12 +46,8 @@ public class HomeForm extends BaseForm{
 		createBaseContents("Welcome");
 		 
 		// Manage Customers button
-		btnEveryDay = createLargeButton("Manage Customers", buttonXPosition, 100);
+		btnEveryDay = createLargeButton("Manage Customers", 265, 250);
 		openManageCustomersWindowOnClick();
-		
-//		// Manage Customer Accounts button
-//		btnEveryDay = createLargeButton("Manage Customer Accounts", buttonXPosition, 250);
-//		openManageCustomerAccountsWindowOnClick();
 
 	}
 	
