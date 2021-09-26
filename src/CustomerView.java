@@ -80,7 +80,8 @@ public class CustomerView extends BaseForm{
 			public void mouseDown(MouseEvent e) {
 				selectedCustomerPosition = customerListBox.getSelectionIndex();
 				if (customerSelected()) {
-					controller.customerToEdit = customerListBox.getItems()[selectedCustomerPosition];
+					String selectedCustomer = customerListBox.getItems()[selectedCustomerPosition];
+					controller.customerToEdit = getCustomerName(selectedCustomer);
 					shell.close();
 					EditCustomerView editCustomerWindow = new EditCustomerView();
 					editCustomerWindow.open();
@@ -111,7 +112,8 @@ public class CustomerView extends BaseForm{
 			public void mouseDown(MouseEvent e) {
 				selectedCustomerPosition = customerListBox.getSelectionIndex();
 				if (customerSelected()) {
-					controller.customerToEdit = customerListBox.getItems()[selectedCustomerPosition];
+					String selectedCustomer = customerListBox.getItems()[selectedCustomerPosition];
+					controller.customerToEdit = getCustomerName(selectedCustomer);
 					shell.close();
 					CustomerAccountsView customerAccountsPage = new CustomerAccountsView();
 					customerAccountsPage.open();
@@ -126,7 +128,7 @@ public class CustomerView extends BaseForm{
 		if (customerList != null) {
 			if (customerList.size() > 0) {
 				for(Customer customer:customerList) {
-					customerListBox.add(customer.getCustomerName());
+					customerListBox.add(customer.getCustomerID() + "   " + customer.getCustomerName());
 				}
 			} 
 		}
@@ -143,5 +145,15 @@ public class CustomerView extends BaseForm{
 		}
 		selectedCustomerPosition = customerListBox.getSelectionIndex();
 		return true;
+	}
+	
+	/*
+	 * Get the name of the customer
+	 * from the customer details displayed
+	 * in the list.
+	 */
+	private String getCustomerName(String customerDetails) {
+		String customerName = customerDetails.replaceAll(".+\\s", "");
+		return customerName;
 	}
 }

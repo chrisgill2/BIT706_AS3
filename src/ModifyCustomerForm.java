@@ -22,7 +22,7 @@ public class ModifyCustomerForm extends BaseForm{
 	
 	Button btnIsEmployee;
 	
-	private final int textBoxXPosition = 200;
+	private final int textBoxXPosition = 250;
 
 	/**
 	 * Open the window.
@@ -57,7 +57,7 @@ public class ModifyCustomerForm extends BaseForm{
 		textAddress = createText(textBoxXPosition, 184);
 		
 		// Cancel Button
-		btnCancel = createLargeButton("Cancel", 291, 344);
+		btnCancel = createLargeButton("Cancel", 350, 344);
 		cancelOnClick();
 		
 		// Bank Employee checkbox
@@ -127,7 +127,7 @@ public class ModifyCustomerForm extends BaseForm{
 
 	public void createTextBoxLabel(String text, int yPosition) {
 		Label label = new Label(shell, SWT.NONE);
-		label.setBounds(70, yPosition, 100, 15);
+		label.setBounds(120, yPosition, 100, 15);
 		label.setText(text);
 	}
 }
