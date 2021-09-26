@@ -5,12 +5,14 @@ import java.util.List;
 public class CustomerController {
 	private Customer customer = new Customer();
 	private CustomerFile customerFile = new CustomerFile();
+	private Transaction transaction;
 	public String customerToEdit;
 	public boolean isBankEmployee;
 	public boolean accountAdded;
 	public String selectedAccount;
-	public Account transferFromAccount;
+	public Account account;
 	public Account transferToAccount;
+	
 	
 	public List<Customer> getCustomers() {
 		Customer.customerList = customerFile.readFromFile();
@@ -27,8 +29,8 @@ public class CustomerController {
 		return customerNames;
 	}
 	
-	public void setTransferFromAccount(Account account) {
-		transferFromAccount = account;
+	public void setCustomerAccount(Account account) {
+		this.account = account;
 	}
 	
 	public void setTransferToAccount(String accountName) {
@@ -117,6 +119,21 @@ public class CustomerController {
 			accountDetails.add(details);
 		}
 		return accountDetails;
+	}
+	
+	public String getInterestAddedToAccount() {
+		transaction = new Transaction(account);
+		transaction.addInterestToAccount();
+		if (transaction.getinterestAddedSuccessIndicator()) {
+			account.transactionList.add(account.lastTransaction);
+			return account.lastTransaction;
+		} else {
+			return null;
+		}
+	}
+	
+	public String getLatestAccountDetails() {
+		return account.getLatestAccountDetails();
 	}
 	
 	private int getPositionInList(List<Account> customerAccounts) {

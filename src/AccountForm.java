@@ -41,6 +41,7 @@ public class AccountForm extends BaseForm {
 		this.accountType = accountType;
 		this.account = account;
 		this.transaction = new Transaction(account);
+		controller.setCustomerAccount(account);
 	}
 
 	/**
@@ -66,8 +67,6 @@ public class AccountForm extends BaseForm {
 
 		// Transactions list box
 		transactionList = new List(shell, SWT.BORDER);
-//		transactionList.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLUE));
-//		transactionList.setBounds(324, 116, 224, 315);
 		
 		transactionList.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		transactionList.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
@@ -126,7 +125,7 @@ public class AccountForm extends BaseForm {
 		btnAccountInformation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				displayAccountDetails();
+				displayMessage(ACCOUNT_DETAILS, controller.getLatestAccountDetails());;
 			}
 		});
 	}
@@ -166,7 +165,6 @@ public class AccountForm extends BaseForm {
 		btnTransferMoney.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				controller.setTransferFromAccount(account);
 				shell.close();
 				TransferView transferForm = new TransferView(account);
 				transferForm.open();
@@ -181,25 +179,12 @@ public class AccountForm extends BaseForm {
 		btnCalculateInterest.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				transaction.addInterestToAccount();
-				if (transaction.getinterestAddedSuccessIndicator()) {
-					account.transactionList.add(account.lastTransaction);
+				if (controller.getInterestAddedToAccount() != null) {
 					displayMessage(SUCCESSFUL_TRANSACTION, INTEREST_ADDED);
-					transactionList.add(account.lastTransaction);
 				} else {
 					displayMessage(ERROR, NO_INTEREST_ADDED);
 				}
 			}
 		});
-	}
-
-	/*
-	 * Reads the account details from a singleton and displays on screen.
-	 */
-	private void displayAccountDetails() {
-		// Check for the latest transaction -- not displayed in this iteration
-		lastTransaction = account.getLastTransaction();
-		String details = account.getLatestAccountDetails();
-		displayMessage(ACCOUNT_DETAILS, details);
 	}
 }
