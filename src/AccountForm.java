@@ -13,8 +13,6 @@ public class AccountForm extends BaseForm {
 	private String accountType;
 	private Account account;
 	private Transaction transaction;
-	private int transactionPosition;
-	private String lastTransaction = "";
 
 	private Button btnHome;
 	private Button btnDepositMoney;

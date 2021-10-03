@@ -2,7 +2,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CustomerController {
+/**
+ * The Controller Class acts as the intermediary between the forms and the objects
+ * that the forms require data from.
+ * There are 2 main object types that the forms require data from:
+ *  Customers, 
+ *  Accounts
+ *  @author Chris Gill
+ *  @version 1.0
+ */
+
+public class Controller {
 	private Customer customer = new Customer();
 	private CustomerFile customerFile = new CustomerFile();
 	private Transaction transaction;
@@ -13,16 +23,18 @@ public class CustomerController {
 	public Account account;
 	public Account transferToAccount;
 	
-	
+	/**
+	 * Reads all customers from the serializable file.
+	 * @return latest list of customers.
+	 */
 	public List<Customer> getCustomers() {
 		Customer.customerList = customerFile.readFromFile();
 		return Customer.customerList;
 	}
 	
 	public List<String> getCustomerNames(){		
-		Customer.customerList = customerFile.readFromFile();
 		List<String> customerNames = new ArrayList<String>();
-		List<Customer> customers = Customer.customerList;
+		List<Customer> customers = getCustomers();
 		for (Customer customer: customers) {
 			customerNames.add(customer.getCustomerName());
 		}
@@ -42,24 +54,44 @@ public class CustomerController {
 		customerFile.writeToFile(Customer.customerList);
 	}
 	
+	/**
+	 * Add the customer to the list of customers and
+	 * update the file with the latest list.
+	 * @param customerDetails
+	 * @param isBankEmployee
+	 */
 	public void addCustomerToList(HashMap<String, String> customerDetails, boolean isBankEmployee) {
 		Customer.customerList = customerFile.readFromFile();
 		customer.addCustomer(customerDetails, isBankEmployee);
 		customerFile.writeToFile(Customer.customerList);
 	}
 	
+	/**
+	 * Update the customer with any changes and
+	 * store in the customer file.
+	 * @param customerDetails
+	 */
 	public void editCustomer(HashMap<String, String> customerDetails) {
 		customer.setIsBankEmployee(isBankEmployee);
 		customer.editCustomer(customerToEdit, customerDetails);
 		customerFile.writeToFile(Customer.customerList);
 	}
 	
+	/**
+	 * Stores all customer details in a HashMap.
+	 * @return customerDetails
+	 */
 	public HashMap<String, String> getCustomerEditDetails() {
 		HashMap<String, String> customerDetails = customer.getCustomerDetailsByName(customerToEdit);
 		isBankEmployee = customer.getIsBankEmployee();
 		return customerDetails;
 	}
 	
+	/**
+	 * Gets a list of names of all accounts that are linked to
+	 * the selected customer.
+	 * @return list of account names
+	 */
 	public List <String> getCustomerAccountNames() {
 		List<Account> customerAccounts =  customer.getCustomerAccounts(customerToEdit);
 		List<String> accountNames = new ArrayList<String>();
@@ -70,6 +102,12 @@ public class CustomerController {
 		return accountNames;
 	}
 	
+	
+	/**
+	 * Uses the string accountType to determine the type of account
+	 * and adds to the list of accounts for the customer selected.
+	 * @param accountType
+	 */
 	public void addCustomerAccount(String accountType) {
 		Account account = createNewAccount(accountType);
 		customer = customer.getCustomerByName(customerToEdit);
@@ -82,6 +120,11 @@ public class CustomerController {
 		}
 	}
 	
+	/**
+	 * Uses the string accountType to determine the type of account
+	 * and creates a new account linked to the customer.
+	 * @param accountType
+	 */
 	public Account createNewAccount(String accountType) {
 		customer = customer.getCustomerByName(customerToEdit);
 		Account account;
@@ -110,6 +153,10 @@ public class CustomerController {
 		return customerAccounts.get(getPositionInList(customerAccounts));
 	}
 	
+	/**
+	 * Gets the account details for the selected customer.
+	 * @return accountDetails
+	 */
 	public List <String> getCustomerAccountDetails(){
 		List<Account> customerAccounts =  customer.getCustomerAccounts(customerToEdit);
 		List<String> accountDetails = new ArrayList<String>();
@@ -121,6 +168,11 @@ public class CustomerController {
 		return accountDetails;
 	}
 	
+	/**
+	 * Sets the last transaction to be interest added if
+	 * the interest calculation was successful.
+	 * @return
+	 */
 	public String getInterestAddedToAccount() {
 		transaction = new Transaction(account);
 		transaction.addInterestToAccount();
@@ -132,8 +184,24 @@ public class CustomerController {
 		}
 	}
 	
+
 	public String getLatestAccountDetails() {
 		return account.getLatestAccountDetails();
+	}
+	
+	public void recordDeposit(double amount) {
+		Transaction transaction = new Transaction(account);
+		transaction.recordDeposit(amount);
+	}
+	
+	/**
+	 * Performs a withdrawal if there are sufficient funds available.
+	 * @param amount
+	 * @throws FailedWithdrawalException if there insufficient funds in the account.
+	 */
+	public void performWithdrawal(double amount) throws FailedWithdrawalException {
+		Transaction transaction = new Transaction(account);
+		transaction.performWithdrawal(amount);
 	}
 	
 	private int getPositionInList(List<Account> customerAccounts) {

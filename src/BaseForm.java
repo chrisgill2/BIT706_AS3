@@ -17,7 +17,7 @@ public class BaseForm {
 	protected Shell shell = new Shell();
 	protected static DecimalFormat df2 = new DecimalFormat("#.##");
 	protected MessageBox messageBox = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
-	protected static CustomerController controller = new CustomerController();
+	protected static Controller controller = new Controller();
 	
 	private static final String BANK_NAME = "ABC Bank";
 	private final int texboxLength = 220;

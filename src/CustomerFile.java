@@ -42,12 +42,6 @@ public class CustomerFile {
 			fi.close();
 			return customer;
 
-		} catch (FileNotFoundException e) {
-			return null;
-		} catch (IOException e) {
-			return null;
-		} catch (ClassNotFoundException e) {
-			return null;
 		} catch (Exception e) {
 			return null;
 		}

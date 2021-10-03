@@ -65,19 +65,4 @@ public class HomeForm extends BaseForm{
 			}
 		});
 	}
-	
-	/**
-	 * Open the Manage customers window
-	 * on button click.
-	 */	
-	private void openManageCustomerAccountsWindowOnClick() {
-		btnEveryDay.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				shell.close();
-				CustomerAccountsView customerAccountsPage = new CustomerAccountsView();
-				customerAccountsPage.open();
-			}
-		});
-	}
 }
