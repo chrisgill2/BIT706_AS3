@@ -26,7 +26,6 @@ public class TransactionForm extends BaseForm{
 	private static final String INVALID_AMOUNT_ERROR = "Please enter a valid amount.";
 	private static final String INVALID_AMOUNT = "Invalid amount.";
 	private static final String SUCCESSFUL_TRANSACTION = " was successful";
-	private static final String INSUFFICIENT_FUNDS = "Insufficient funds for withdrawal.";
 	private static final String FAILED_TRANSACTION = "Failed Transaction";
 	private static final String SUCCESS = "Successful Transaction";
 	private static final String DEPOSIT = "Deposit";
@@ -82,7 +81,6 @@ public class TransactionForm extends BaseForm{
 			performTransactionOnClick();
 		}
 		
-
 		// Cancel button
 		btnCancel = createButton(CANCEL, 350, buttonYPosition);
 		cancelTransactionOnClick();
@@ -140,11 +138,11 @@ public class TransactionForm extends BaseForm{
 					};
 				
 				if (transactionType.equals("Deposit")) {
-					transaction.recordDeposit(amount);
+					controller.recordDeposit(amount);
 					displayMessage(SUCCESS, transactionType + SUCCESSFUL_TRANSACTION);
 				} else {
 					try {
-						transaction.performWithdrawal(amount);
+						controller.performWithdrawal(amount);
 						displayMessage(SUCCESS, transactionType + SUCCESSFUL_TRANSACTION);
 					} catch (FailedWithdrawalException e1) {
 						displayMessage(FAILED_TRANSACTION, e1.getMessage());

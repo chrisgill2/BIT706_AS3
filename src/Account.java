@@ -74,7 +74,11 @@ public abstract  class Account implements Serializable{
 
         // Apply fee if the withdrawal exceeds available funds
         if (withdrawalAmount > limit){
-            balance -= failedTransactionFee;
+        	if (customer.getIsBankEmployee()) {
+        		balance -= failedTransactionFee / 2;
+        	} else {
+        		balance -= failedTransactionFee;
+        	}
             return false;
         }
         return true;

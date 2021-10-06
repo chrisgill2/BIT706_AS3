@@ -1,5 +1,4 @@
 
-
 public class OmniAccount extends Account{
 	
 	/*
@@ -7,24 +6,16 @@ public class OmniAccount extends Account{
 	 * iteration where there is only a single user.
 	 */
 	static final int ACCOUNT_ID = 3;
-	static final String ACCOUNT_NAME = "Omni";
 	
     public OmniAccount(Customer customer){
-    	super(ACCOUNT_NAME, ACCOUNT_ID, customer);
+    	super("Omni", ACCOUNT_ID, customer);
         this.failedTransactionFee = 10;
-        this.interestRate = 10;
+        this.interestRate = 4;
+        this.overDraftAmount = 1000;
     }
-	
-	public void setInterestRate(int interestRate) {
-			this.interestRate = interestRate;
-	}
 	
 	public double getInterestRate() {
 		return this.interestRate;
-	}
-	
-	public void setOverDraft(int overDraftAmount) {
-		this.overDraftAmount = overDraftAmount;
 	}
 	
 	public int getOverDraft() {

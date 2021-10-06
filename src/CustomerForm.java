@@ -102,10 +102,6 @@ public class CustomerView extends BaseForm{
 		});
 	}
 	
-	/**
-	 * Open the Manage customer accounts window
-	 * on button click.
-	 */	
 	private void openManageCustomerAccountsWindowOnClick() {
 		btnManageAccounts.addMouseListener(new MouseAdapter() {
 			@Override

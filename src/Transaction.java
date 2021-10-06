@@ -9,10 +9,8 @@ public class Transaction {
 	
 	Account account;
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
-	private boolean withdrawalSuccessIndicator = false;
 	private boolean interestAddedSuccessIndicator = false;
 	private boolean transferSuccessIndicator = false;
-	private double balance;
 	private double interestEarned = 0.0;
 	CustomerFile customerFile = new CustomerFile();
 	
@@ -140,11 +138,6 @@ public class Transaction {
         return interestEarned;
     }
 	
-	
-	/*
-	 * Adds each transaction in the list
-	 * to the account singleton for future reference.
-	 */
 	public List addTransactionToList(List transactionList) {
 		if(account.transactionList != null && account.transactionList.size() > 0) {
 			for (String transaction :account.transactionList) {
